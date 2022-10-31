@@ -42,4 +42,17 @@ public class MarsRoverTest {
 
         assertEquals(expectedMarsRoverCoordinates, marsRover.getCoordinates());
     }
+
+    @Test
+    void given_backward_command_rover_moves_backward() {
+        Point coordinates = new Point(0, 0);
+        String direction = "N";
+        MarsRover marsRover = new MarsRover(coordinates, direction);
+        String backwardCommand = "B";
+        Point expectedMarsRoverCoordinates = new Point(0, -1);
+
+        marsRover.receives(backwardCommand);
+
+        assertEquals(expectedMarsRoverCoordinates, marsRover.getCoordinates());
+    }
 }
