@@ -29,4 +29,17 @@ public class MarsRoverTest {
         assertEquals(coordinates, marsRoverCoordinates);
         assertEquals(direction, marsRoverDirection);
     }
+
+    @Test
+    void given_forward_command_rover_moves_forward() {
+        Point coordinates = new Point(0, 0);
+        String direction = "N";
+        MarsRover marsRover = new MarsRover(coordinates, direction);
+        String forwardCommand = "F";
+        Point expectedMarsRoverCoordinates = new Point(0, 1);
+
+        marsRover.receives(forwardCommand);
+
+        assertEquals(coordinates, expectedMarsRoverCoordinates);
+    }
 }
