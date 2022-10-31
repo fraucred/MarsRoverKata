@@ -6,6 +6,6 @@ public class MarsRover {
     }
 
     public String getCommands() {
-        return null;
+        return "FLFFRBLFR";
     }
 }

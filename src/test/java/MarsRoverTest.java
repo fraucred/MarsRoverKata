@@ -1,6 +1,7 @@
 import org.example.MarsRover;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MarsRoverTest {
 
@@ -11,6 +12,6 @@ public class MarsRoverTest {
 
         marsRover.receives(commands);
 
-        Assertions.assertEquals(commands, marsRover.getCommands());
+        assertEquals(commands, marsRover.getCommands());
     }
 }
