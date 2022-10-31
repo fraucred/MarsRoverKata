@@ -20,10 +20,10 @@ public class MarsRover {
     }
 
     public Point getCoordinates() {
-        return null;
+        return new Point(0,0);
     }
 
     public String getDirection() {
-        return null;
+        return "N";
     }
 }
