@@ -40,6 +40,6 @@ public class MarsRoverTest {
 
         marsRover.receives(forwardCommand);
 
-        assertEquals(coordinates, expectedMarsRoverCoordinates);
+        assertEquals(expectedMarsRoverCoordinates, marsRover.getCoordinates());
     }
 }
