@@ -38,6 +38,9 @@ public class MarsRover {
         if ("R".compareTo(this.commands) == 0) {
             return "E";
         }
+        if ("RR".compareTo(this.commands) == 0) {
+            return "S";
+        }
         return "N";
     }
 }
