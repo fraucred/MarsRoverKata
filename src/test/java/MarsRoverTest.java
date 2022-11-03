@@ -68,4 +68,17 @@ public class MarsRoverTest {
 
         assertEquals(expectedMarsRoverDirection, marsRover.getDirection());
     }
+
+    @Test
+    void given_right_command_rover_moves_to_the_right() {
+        Point coordinates = new Point(0, 0);
+        String direction = "N";
+        MarsRover marsRover = new MarsRover(coordinates, direction);
+        String rightCommand = "R";
+        String expectedMarsRoverDirection = "E";
+
+        marsRover.receives(rightCommand);
+
+        assertEquals(expectedMarsRoverDirection, marsRover.getDirection());
+    }
 }
