@@ -32,6 +32,9 @@ public class MarsRover {
     }
 
     public String getDirection() {
+        if ("L".compareTo(this.commands) == 0) {
+            return "W";
+        }
         return "N";
     }
 }
