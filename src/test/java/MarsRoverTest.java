@@ -78,15 +78,6 @@ public class MarsRoverTest {
         assertEquals(new Point(1, 4), marsRover.getCoordinates());
     }
 
-    @Test
-    void given_forward_command_rover_moves_forward_and_wraps_edge() {
-        MarsRover marsRover = initMarsRover(1, 4, "N");
-
-        marsRover.receives("F");
-
-        assertEquals(new Point(1, 1), marsRover.getCoordinates());
-    }
-
     private MarsRover initMarsRover(int x, int y, String direction) {
         return new MarsRover(new Point(x, y), direction);
     }
