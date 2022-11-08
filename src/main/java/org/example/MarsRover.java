@@ -15,6 +15,26 @@ public class MarsRover {
 
     public void receives(String commands) {
         this.commands = commands;
+//        parseCommands();
+        moveRoverByCommands();
+    }
+
+    private void moveRoverByCommands() {
+        int lastDirectionIndex = directions.size() - 1;
+        boolean isTurnLeftCommand = "L".compareTo(this.commands) == 0;
+        boolean isTurnRightCommand = "R".compareTo(this.commands) == 0;
+
+        if (currentDirectionIndex == 0 && isTurnLeftCommand) {
+            currentDirectionIndex = lastDirectionIndex;
+        } else if (currentDirectionIndex == lastDirectionIndex && isTurnRightCommand) {
+            currentDirectionIndex = 0;
+        } else if (isTurnLeftCommand) {
+            currentDirectionIndex--;
+        } else if (isTurnRightCommand) {
+            currentDirectionIndex++;
+        } else if ("RR".compareTo(this.commands) == 0) {    // TODO if isTurnRightCommand x2, return S
+            currentDirectionIndex = 2;
+        }
     }
 
     public String getCommands() {
@@ -32,21 +52,6 @@ public class MarsRover {
     }
 
     public String getDirection() {
-        int lastDirectionIndex = directions.size() - 1;
-        boolean isTurnLeftCommand = "L".compareTo(this.commands) == 0;
-        boolean isTurnRightCommand = "R".compareTo(this.commands) == 0;
-
-        if (currentDirectionIndex == 0 && isTurnLeftCommand) {
-            currentDirectionIndex = lastDirectionIndex;
-        } else if (currentDirectionIndex == lastDirectionIndex && isTurnRightCommand) {
-            currentDirectionIndex = 0;
-        } else if (isTurnLeftCommand) {
-            currentDirectionIndex--;
-        } else if (isTurnRightCommand) {
-            currentDirectionIndex++;
-        } else if ("RR".compareTo(this.commands) == 0) {    // TODO if isTurnRightCommand x2, return S
-            return "S";
-        }
-        return directions.get(currentDirectionIndex);       // TODO getDirection final implementation with reading from current direction index
+        return directions.get(currentDirectionIndex);
     }
 }
