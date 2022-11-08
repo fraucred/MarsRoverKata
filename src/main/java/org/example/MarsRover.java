@@ -44,20 +44,12 @@ public class MarsRover {
     }
 
     private void updateDirectionIndexFromCurrentValueAndTurnLeftCommand() {
-        boolean isTurnLeftCommand = parseSingleLeftRightCommand();
-        updateDirectionIndex(isTurnLeftCommand);
-    }
-
-    private boolean parseSingleLeftRightCommand() {
-        return "L".compareTo(this.commands) == 0;
-    }
-
-    private void updateDirectionIndex(boolean isTurnLeftCommand) {
         int lastDirectionIndex = directions.size() - 1;
-        currentDirectionIndex = getIndex(isTurnLeftCommand, lastDirectionIndex);
+        boolean isTurnLeftCommand = parseSingleLeftRightCommand();
+        currentDirectionIndex = getIndexFromCurrentValueAndTurnLeftCommand(isTurnLeftCommand, lastDirectionIndex);
     }
 
-    private int getIndex(boolean isTurnLeftCommand, int lastDirectionIndex) {
+    private int getIndexFromCurrentValueAndTurnLeftCommand(boolean isTurnLeftCommand, int lastDirectionIndex) {
         if (isTurnLeftCommand && currentDirectionIndex == 0) {
             return lastDirectionIndex;
         }
@@ -67,7 +59,11 @@ public class MarsRover {
         if (isTurnLeftCommand) {
             return currentDirectionIndex - 1;
         } else {
-            return currentDirectionIndex + 1 ;
+            return currentDirectionIndex + 1;
         }
+    }
+
+    private boolean parseSingleLeftRightCommand() {
+        return "L".compareTo(this.commands) == 0;
     }
 }
