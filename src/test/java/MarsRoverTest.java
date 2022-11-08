@@ -69,6 +69,15 @@ public class MarsRoverTest {
         assertEquals("S", marsRover.getDirection());
     }
 
+    @Test
+    void given_backward_command_rover_moves_backward_and_wraps_edge() {
+        MarsRover marsRover = initMarsRover(1, 1, "N");
+
+        marsRover.receives("B");
+
+        assertEquals(new Point(1, 4), marsRover.getCoordinates());
+    }
+
     private MarsRover initMarsRover(int x, int y, String direction) {
         return new MarsRover(new Point(x, y), direction);
     }
