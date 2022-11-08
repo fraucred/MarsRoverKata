@@ -35,11 +35,11 @@ public class MarsRoverTest {
 
     @Test
     void given_backward_command_rover_moves_backward() {
-        MarsRover marsRover = initMarsRover(1, 1, "N");
+        MarsRover marsRover = initMarsRover(1, 2, "N");
 
         marsRover.receives("B");
 
-        assertEquals(new Point(1, -2), marsRover.getCoordinates());
+        assertEquals(new Point(1, 1), marsRover.getCoordinates());
     }
 
     @Test

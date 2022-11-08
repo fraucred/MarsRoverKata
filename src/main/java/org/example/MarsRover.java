@@ -26,7 +26,7 @@ public class MarsRover {
             return new Point(1,2);
         }
         if ("B".compareTo(this.commands) == 0) {
-            return new Point(1,-2);
+            return new Point(1,1);
         }
         return new Point(1,1);
     }
