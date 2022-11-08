@@ -19,22 +19,17 @@ public class MarsRoverTest {
 
     @Test
     void has_initial_starting_point_and_faces_north_direction() {
-        Point coordinates = new Point(0, 0);
-        String direction = "N";
-        MarsRover marsRover = new MarsRover(coordinates, direction);
-
+        MarsRover marsRover = initMarsRover();
         Point marsRoverCoordinates = marsRover.getCoordinates();
         String marsRoverDirection = marsRover.getDirection();
 
-        assertEquals(coordinates, marsRoverCoordinates);
-        assertEquals(direction, marsRoverDirection);
+        assertEquals(new Point(0, 0), marsRoverCoordinates);
+        assertEquals("N", marsRoverDirection);
     }
 
     @Test
     void given_forward_command_rover_moves_forward() {
-        Point coordinates = new Point(0, 0);
-        String direction = "N";
-        MarsRover marsRover = new MarsRover(coordinates, direction);
+        MarsRover marsRover = initMarsRover();
         String forwardCommand = "F";
         Point expectedMarsRoverCoordinates = new Point(0, 1);
 
@@ -45,9 +40,7 @@ public class MarsRoverTest {
 
     @Test
     void given_backward_command_rover_moves_backward() {
-        Point coordinates = new Point(0, 0);
-        String direction = "N";
-        MarsRover marsRover = new MarsRover(coordinates, direction);
+        MarsRover marsRover = initMarsRover();
         String backwardCommand = "B";
         Point expectedMarsRoverCoordinates = new Point(0, -1);
 
@@ -58,9 +51,7 @@ public class MarsRoverTest {
 
     @Test
     void given_left_command_rover_moves_to_the_left() {
-        Point coordinates = new Point(0, 0);
-        String direction = "N";
-        MarsRover marsRover = new MarsRover(coordinates, direction);
+        MarsRover marsRover = initMarsRover();
         String leftCommand = "L";
         String expectedMarsRoverDirection = "W";
 
@@ -71,9 +62,7 @@ public class MarsRoverTest {
 
     @Test
     void given_right_command_rover_moves_to_the_right() {
-        Point coordinates = new Point(0, 0);
-        String direction = "N";
-        MarsRover marsRover = new MarsRover(coordinates, direction);
+        MarsRover marsRover = initMarsRover();
         String rightCommand = "R";
         String expectedMarsRoverDirection = "E";
 
@@ -84,14 +73,18 @@ public class MarsRoverTest {
 
     @Test
     void given_right_command_twice_rover_moves_twice_to_the_right() {
-        Point coordinates = new Point(0, 0);
-        String direction = "N";
-        MarsRover marsRover = new MarsRover(coordinates, direction);
+        MarsRover marsRover = initMarsRover();
         String rightCommand = "RR";
         String expectedMarsRoverDirection = "S";
 
         marsRover.receives(rightCommand);
 
         assertEquals(expectedMarsRoverDirection, marsRover.getDirection());
+    }
+
+    private MarsRover initMarsRover() {
+        Point coordinates = new Point(0, 0);
+        String direction = "N";
+        return new MarsRover(coordinates, direction);
     }
 }
