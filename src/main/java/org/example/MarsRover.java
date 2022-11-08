@@ -41,15 +41,15 @@ public class MarsRover {
     }
 
     private void moveRoverByCommands() {
-        updateDirectionIndexFromCurrentValueAndTurnLeftCommand();
-        if ("RR".compareTo(this.commands) == 0) {    // TODO if isTurnRightCommand x2, return S => parsing more than one single command
-            currentDirectionIndex = 2;
+        List<String> commands = Arrays.stream(this.commands.split("")).toList();
+        for (String command : commands) {
+            updateDirectionIndexFromCurrentValueAndTurnLeftCommand(command);
         }
     }
 
-    private void updateDirectionIndexFromCurrentValueAndTurnLeftCommand() {
+    private void updateDirectionIndexFromCurrentValueAndTurnLeftCommand(String command) {
         int lastDirectionIndex = directions.size() - 1;
-        boolean isTurnLeftCommand = parseSingleLeftRightCommand();
+        boolean isTurnLeftCommand = parseSingleLeftRightCommand(command);
         currentDirectionIndex = getIndexFromCurrentValueAndTurnLeftCommand(isTurnLeftCommand, lastDirectionIndex);
     }
 
@@ -67,8 +67,8 @@ public class MarsRover {
         }
     }
 
-    private boolean parseSingleLeftRightCommand() {
-        return "L".compareTo(this.commands) == 0;
+    private boolean parseSingleLeftRightCommand(String command) {
+        return "L".compareTo(command) == 0;
     }
 
     private boolean isOnEdge() {
