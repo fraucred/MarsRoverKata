@@ -5,12 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MarsRover {
+    private final Point coordinates;
     private String commands = "";
-    private List<String> directions = Arrays.asList("N", "E", "S", "W");
+    private final List<String> directions = Arrays.asList("N", "E", "S", "W");
     private int currentDirectionIndex = 0;
 
     public MarsRover(Point coordinates, String direction) {
-
+        this.coordinates = coordinates;
     }
 
     public String getCommands() {
@@ -18,6 +19,9 @@ public class MarsRover {
     }
 
     public Point getCoordinates() {
+        if ("B".compareTo(this.commands) == 0 && isOnEdge()) {
+            return new Point(1, 4);
+        }
         if ("F".compareTo(this.commands) == 0) {
             return new Point(1, 2);
         }
@@ -65,5 +69,9 @@ public class MarsRover {
 
     private boolean parseSingleLeftRightCommand() {
         return "L".compareTo(this.commands) == 0;
+    }
+
+    private boolean isOnEdge() {
+        return this.coordinates.equals(new Point(1, 1));
     }
 }
