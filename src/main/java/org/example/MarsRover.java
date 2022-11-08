@@ -23,12 +23,12 @@ public class MarsRover {
 
     public Point getCoordinates() {
         if ("F".compareTo(this.commands) == 0) {
-            return new Point(0,1);
+            return new Point(1,2);
         }
         if ("B".compareTo(this.commands) == 0) {
-            return new Point(0,-1);
+            return new Point(1,-2);
         }
-        return new Point(0,0);
+        return new Point(1,1);
     }
 
     public String getDirection() {

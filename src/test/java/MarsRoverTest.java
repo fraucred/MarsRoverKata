@@ -9,7 +9,7 @@ public class MarsRoverTest {
 
     @Test
     void receives_a_character_array_of_commands() {
-        MarsRover marsRover = initMarsRover(0, 0, "N");
+        MarsRover marsRover = initMarsRover(1, 1, "N");
 
         marsRover.receives("FLFFRBLFR");
 
@@ -18,33 +18,33 @@ public class MarsRoverTest {
 
     @Test
     void has_initial_starting_point_and_faces_north_direction() {
-        MarsRover marsRover = initMarsRover(0, 0, "N");
+        MarsRover marsRover = initMarsRover(1, 1, "N");
 
-        assertEquals(new Point(0, 0), marsRover.getCoordinates());
+        assertEquals(new Point(1, 1), marsRover.getCoordinates());
         assertEquals("N", marsRover.getDirection());
     }
 
     @Test
     void given_forward_command_rover_moves_forward() {
-        MarsRover marsRover = initMarsRover(0, 0, "N");
+        MarsRover marsRover = initMarsRover(1, 1, "N");
 
         marsRover.receives("F");
 
-        assertEquals(new Point(0, 1), marsRover.getCoordinates());
+        assertEquals(new Point(1, 2), marsRover.getCoordinates());
     }
 
     @Test
     void given_backward_command_rover_moves_backward() {
-        MarsRover marsRover = initMarsRover(0, 0, "N");
+        MarsRover marsRover = initMarsRover(1, 1, "N");
 
         marsRover.receives("B");
 
-        assertEquals(new Point(0, -1), marsRover.getCoordinates());
+        assertEquals(new Point(1, -2), marsRover.getCoordinates());
     }
 
     @Test
     void given_left_command_rover_moves_to_the_left() {
-        MarsRover marsRover = initMarsRover(0, 0, "N");
+        MarsRover marsRover = initMarsRover(1, 1, "N");
 
         marsRover.receives("L");
 
@@ -53,7 +53,7 @@ public class MarsRoverTest {
 
     @Test
     void given_right_command_rover_moves_to_the_right() {
-        MarsRover marsRover = initMarsRover(0, 0, "N");
+        MarsRover marsRover = initMarsRover(1, 1, "N");
 
         marsRover.receives("R");
 
@@ -62,7 +62,7 @@ public class MarsRoverTest {
 
     @Test
     void given_right_command_twice_rover_moves_twice_to_the_right() {
-        MarsRover marsRover = initMarsRover(0, 0, "N");
+        MarsRover marsRover = initMarsRover(1, 1, "N");
 
         marsRover.receives("RR");
 
