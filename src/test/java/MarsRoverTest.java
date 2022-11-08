@@ -68,6 +68,14 @@ public class MarsRoverTest {
 
         assertEquals("S", marsRover.getDirection());
     }
+    @Test
+    void given_right_command_three_times_rover_moves_three_times_to_the_right() {
+        MarsRover marsRover = initMarsRover(1, 1, "N");
+
+        marsRover.receives("RRR");
+
+        assertEquals("W", marsRover.getDirection());
+    }
 
     @Test
     void given_backward_command_rover_moves_backward_and_wraps_edge() {
