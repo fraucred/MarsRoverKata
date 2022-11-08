@@ -8,10 +8,11 @@ public class MarsRover {
     private final Point coordinates;
     private String commands = "";
     private final List<String> directions = Arrays.asList("N", "E", "S", "W");
-    private int currentDirectionIndex = 0;
+    private int currentDirectionIndex;
 
     public MarsRover(Point coordinates, String direction) {
         this.coordinates = coordinates;
+        this.currentDirectionIndex = directions.indexOf(direction);
     }
 
     public String getCommands() {
@@ -19,16 +20,7 @@ public class MarsRover {
     }
 
     public Point getCoordinates() {
-        if ("B".compareTo(this.commands) == 0 && isOnEdge()) {
-            return new Point(1, 4);
-        }
-        if ("F".compareTo(this.commands) == 0) {
-            return new Point(1, 2);
-        }
-        if ("B".compareTo(this.commands) == 0) {
-            return new Point(1, 1);
-        }
-        return new Point(1, 1);
+        return this.coordinates;
     }
 
     public String getDirection() {
@@ -43,14 +35,19 @@ public class MarsRover {
     private void moveRoverByCommands() {
         List<String> commands = Arrays.stream(this.commands.split("")).toList();
         for (String command : commands) {
-            updateDirectionIndexFromCurrentValueAndTurnLeftCommand(command);
+            updateCoordinatesOrDirection(command);
         }
     }
 
-    private void updateDirectionIndexFromCurrentValueAndTurnLeftCommand(String command) {
-        int lastDirectionIndex = directions.size() - 1;
-        boolean isTurnLeftCommand = parseSingleLeftRightCommand(command);
-        currentDirectionIndex = getIndexFromCurrentValueAndTurnLeftCommand(isTurnLeftCommand, lastDirectionIndex);
+    private void updateCoordinatesOrDirection(String command) {
+        if ("L".compareTo(command) == 0 || "R".compareTo(command) == 0) {
+            int lastDirectionIndex = directions.size() - 1;
+            boolean isTurnLeftCommand = parseSingleLeftRightCommand(command);
+            currentDirectionIndex = getIndexFromCurrentValueAndTurnLeftCommand(isTurnLeftCommand, lastDirectionIndex);
+        } else {
+            boolean isMoveForwardCommand = parseSingleForwardBackwardCommand(command);
+            updateCoordinates(isMoveForwardCommand);
+        }
     }
 
     private int getIndexFromCurrentValueAndTurnLeftCommand(boolean isTurnLeftCommand, int lastDirectionIndex) {
@@ -71,7 +68,43 @@ public class MarsRover {
         return "L".compareTo(command) == 0;
     }
 
-    private boolean isOnEdge() {
-        return this.coordinates.equals(new Point(1, 1));
+    private boolean parseSingleForwardBackwardCommand(String command) {
+        return "F".compareTo(command) == 0;
     }
+
+    private void updateCoordinates(boolean isMoveForwardCommand) {
+        int x = (int) this.coordinates.getX();
+        int y = (int) this.coordinates.getY();
+        switch (currentDirectionIndex) {
+            case 0:
+                if (isMoveForwardCommand) {
+                    this.coordinates.move(x, y + 1);
+                } else {
+                    this.coordinates.move(x, y - 1);
+                }
+                break;
+            case 1:
+                if (isMoveForwardCommand) {
+                    this.coordinates.move(x + 1, y);
+                } else {
+                    this.coordinates.move(x - 1, y);
+                }
+                break;
+            case 2:
+                if (isMoveForwardCommand) {
+                    this.coordinates.move(x, y - 1);
+                } else {
+                    this.coordinates.move(x, y + 1);
+                }
+                break;
+            case 3:
+                if (isMoveForwardCommand) {
+                    this.coordinates.move(x - 1, y);
+                } else {
+                    this.coordinates.move(x + 1, y);
+                }
+                break;
+        }
+    }
+
 }

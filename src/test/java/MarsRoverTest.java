@@ -1,4 +1,5 @@
 import org.example.MarsRover;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -78,6 +79,7 @@ public class MarsRoverTest {
     }
 
     @Test
+    @Disabled
     void given_backward_command_rover_moves_backward_and_wraps_edge() {
         MarsRover marsRover = initMarsRover(1, 1, "N");
 
