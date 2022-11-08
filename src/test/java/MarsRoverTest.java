@@ -86,6 +86,16 @@ public class MarsRoverTest {
         assertEquals(new Point(1, 4), marsRover.getCoordinates());
     }
 
+    @Test
+    void starts_at_1_1_north_and_moves_to_1_3_E_with_FBFFR_commands() {
+        MarsRover marsRover = initMarsRover(1, 1, "N");
+
+        marsRover.receives("FBFFR");
+
+        assertEquals(new Point(1, 3), marsRover.getCoordinates());
+        assertEquals("E", marsRover.getDirection());
+    }
+
     private MarsRover initMarsRover(int x, int y, String direction) {
         return new MarsRover(new Point(x, y), direction);
     }
