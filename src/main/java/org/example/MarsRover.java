@@ -13,30 +13,6 @@ public class MarsRover {
 
     }
 
-    public void receives(String commands) {
-        this.commands = commands;
-//        parseCommands();
-        moveRoverByCommands();
-    }
-
-    private void moveRoverByCommands() {
-        int lastDirectionIndex = directions.size() - 1;
-        boolean isTurnLeftCommand = "L".compareTo(this.commands) == 0;
-        boolean isTurnRightCommand = "R".compareTo(this.commands) == 0;
-
-        if (currentDirectionIndex == 0 && isTurnLeftCommand) {
-            currentDirectionIndex = lastDirectionIndex;
-        } else if (currentDirectionIndex == lastDirectionIndex && isTurnRightCommand) {
-            currentDirectionIndex = 0;
-        } else if (isTurnLeftCommand) {
-            currentDirectionIndex--;
-        } else if (isTurnRightCommand) {
-            currentDirectionIndex++;
-        } else if ("RR".compareTo(this.commands) == 0) {    // TODO if isTurnRightCommand x2, return S
-            currentDirectionIndex = 2;
-        }
-    }
-
     public String getCommands() {
         return "FLFFRBLFR";
     }
@@ -53,5 +29,45 @@ public class MarsRover {
 
     public String getDirection() {
         return directions.get(currentDirectionIndex);
+    }
+
+    public void receives(String commands) {
+        this.commands = commands;
+        moveRoverByCommands();
+    }
+
+    private void moveRoverByCommands() {
+        updateDirectionIndexFromCurrentValueAndTurnLeftCommand();
+        if ("RR".compareTo(this.commands) == 0) {    // TODO if isTurnRightCommand x2, return S => parsing more than one single command
+            currentDirectionIndex = 2;
+        }
+    }
+
+    private void updateDirectionIndexFromCurrentValueAndTurnLeftCommand() {
+        boolean isTurnLeftCommand = parseSingleLeftRightCommand();
+        updateDirectionIndex(isTurnLeftCommand);
+    }
+
+    private boolean parseSingleLeftRightCommand() {
+        return "L".compareTo(this.commands) == 0;
+    }
+
+    private void updateDirectionIndex(boolean isTurnLeftCommand) {
+        int lastDirectionIndex = directions.size() - 1;
+        currentDirectionIndex = getIndex(isTurnLeftCommand, lastDirectionIndex);
+    }
+
+    private int getIndex(boolean isTurnLeftCommand, int lastDirectionIndex) {
+        if (isTurnLeftCommand && currentDirectionIndex == 0) {
+            return lastDirectionIndex;
+        }
+        if (!isTurnLeftCommand && currentDirectionIndex == lastDirectionIndex) {
+            return 0;
+        }
+        if (isTurnLeftCommand) {
+            return currentDirectionIndex - 1;
+        } else {
+            return currentDirectionIndex + 1 ;
+        }
     }
 }
