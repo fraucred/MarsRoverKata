@@ -6,11 +6,12 @@ import java.util.List;
 public class MarsRover {
     private Coordinates coordinates;
     private Direction direction;
+    private final Land land;
 
-
-    public MarsRover(Coordinates coordinates, Direction direction) {
+    public MarsRover(Land land, Coordinates coordinates, Direction direction) {
         this.coordinates = coordinates;
         this.direction = direction;
+        this.land = land;
     }
 
     public Coordinates getCoordinates() {
@@ -49,9 +50,9 @@ public class MarsRover {
 
     private void moveToNewCoordinates(boolean isMoveForwardCommand) {
         if (isMoveForwardCommand) {
-            this.coordinates = this.direction.moveForward(this.coordinates);
+            this.coordinates = this.direction.moveForward(this.land, this.coordinates);
         } else {
-            this.coordinates = this.direction.moveBackward(this.coordinates);
+            this.coordinates = this.direction.moveBackward(this.land, this.coordinates);
         }
     }
 

@@ -13,13 +13,13 @@ public enum Direction {
         }
 
         @Override
-        Coordinates moveForward(Coordinates coordinates) {
-            return coordinates.incrementY();
+        Coordinates moveForward(Land land, Coordinates coordinates) {
+            return coordinates.incrementY(land.depth());
         }
 
         @Override
-        Coordinates moveBackward(Coordinates coordinates) {
-            return coordinates.decrementY();
+        Coordinates moveBackward(Land land, Coordinates coordinates) {
+            return coordinates.decrementY(land.depth());
         }
     },
     EAST {
@@ -34,13 +34,13 @@ public enum Direction {
         }
 
         @Override
-        Coordinates moveForward(Coordinates coordinates) {
-            return coordinates.incrementX();
+        Coordinates moveForward(Land land, Coordinates coordinates) {
+            return coordinates.incrementX(land.width());
         }
 
         @Override
-        Coordinates moveBackward(Coordinates coordinates) {
-            return coordinates.decrementX();
+        Coordinates moveBackward(Land land, Coordinates coordinates) {
+            return coordinates.decrementX(land.width());
         }
     },
     SOUTH {
@@ -55,13 +55,13 @@ public enum Direction {
         }
 
         @Override
-        Coordinates moveForward(Coordinates coordinates) {
-            return NORTH.moveBackward(coordinates);
+        Coordinates moveForward(Land land, Coordinates coordinates) {
+            return NORTH.moveBackward(land, coordinates);
         }
 
         @Override
-        Coordinates moveBackward(Coordinates coordinates) {
-            return NORTH.moveForward(coordinates);
+        Coordinates moveBackward(Land land, Coordinates coordinates) {
+            return NORTH.moveForward(land, coordinates);
         }
     },
     WEST {
@@ -76,13 +76,13 @@ public enum Direction {
         }
 
         @Override
-        Coordinates moveForward(Coordinates coordinates) {
-            return EAST.moveBackward(coordinates);
+        Coordinates moveForward(Land land, Coordinates coordinates) {
+            return EAST.moveBackward(land, coordinates);
         }
 
         @Override
-        Coordinates moveBackward(Coordinates coordinates) {
-            return EAST.moveForward(coordinates);
+        Coordinates moveBackward(Land land, Coordinates coordinates) {
+            return EAST.moveForward(land, coordinates);
         }
     };
 
@@ -91,7 +91,7 @@ public enum Direction {
 
     abstract Direction turnRight();
 
-    abstract Coordinates moveForward(Coordinates coordinates);
+    abstract Coordinates moveForward(Land land, Coordinates coordinates);
 
-    abstract Coordinates moveBackward(Coordinates coordinates);
+    abstract Coordinates moveBackward(Land land, Coordinates coordinates);
 }

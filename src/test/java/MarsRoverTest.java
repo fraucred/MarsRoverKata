@@ -1,7 +1,7 @@
 import org.example.Coordinates;
 import org.example.Direction;
+import org.example.Land;
 import org.example.MarsRover;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,6 +64,7 @@ public class MarsRoverTest {
 
         assertEquals(Direction.SOUTH, marsRover.getDirection());
     }
+
     @Test
     void given_right_command_three_times_rover_moves_three_times_to_the_right() {
         MarsRover marsRover = initMarsRover(1, 1, Direction.NORTH);
@@ -74,17 +75,16 @@ public class MarsRoverTest {
     }
 
     @Test
-    @Disabled
     void given_backward_command_rover_moves_backward_and_wraps_edge() {
         MarsRover marsRover = initMarsRover(1, 1, Direction.NORTH);
 
         marsRover.moveByCommands("B");
 
-        assertEquals(new Coordinates(1, 4), marsRover.getCoordinates());
+        assertEquals(new Coordinates(1, 10), marsRover.getCoordinates());
     }
 
     @Test
-    void starts_at_1_1_north_and_moves_to_1_3_E_with_FBFFR_commands() {
+    void starts_at_1_1_NORTH_and_moves_to_1_3_EAST_with_FBFFR_commands() {
         MarsRover marsRover = initMarsRover(1, 1, Direction.NORTH);
 
         marsRover.moveByCommands("FBFFR");
@@ -93,7 +93,18 @@ public class MarsRoverTest {
         assertEquals(Direction.EAST, marsRover.getDirection());
     }
 
+    @Test
+    void starts_at_1_1_NORTH_and_moves_to_9_3_WEST_with_FBFFLFF_commands() {
+        MarsRover marsRover = initMarsRover(1, 1, Direction.NORTH);
+
+        marsRover.moveByCommands("FBFFLFF");
+
+        assertEquals(new Coordinates(9, 3), marsRover.getCoordinates());
+        assertEquals(Direction.WEST, marsRover.getDirection());
+    }
+
     private MarsRover initMarsRover(int x, int y, Direction direction) {
-        return new MarsRover(new Coordinates(x, y), direction);
+        Land marsLand = new Land(10, 10);
+        return new MarsRover(marsLand, new Coordinates(x, y), direction);
     }
 }
