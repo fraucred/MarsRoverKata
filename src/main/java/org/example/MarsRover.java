@@ -6,13 +6,11 @@ import java.util.List;
 
 public class MarsRover {
     private final Point coordinates;
-    private String commands = "";
-    private final List<String> directions = Arrays.asList("N", "E", "S", "W");
-    private int currentDirectionIndex;
+    private final DirectionIndex directionIndex;
 
-    public MarsRover(Point coordinates, String direction) {
+    public MarsRover(Point coordinates, DirectionIndex directionIndex) {
         this.coordinates = coordinates;
-        this.currentDirectionIndex = directions.indexOf(direction);
+        this.directionIndex = directionIndex;
     }
 
     public String getCommands() {
@@ -24,61 +22,51 @@ public class MarsRover {
     }
 
     public String getDirection() {
-        return directions.get(currentDirectionIndex);
+        return directionIndex.getDirection();
     }
 
-    public void receives(String commands) {
-        this.commands = commands;
-        moveRoverByCommands();
+    public void moveByCommands(String commands) {
+        readAndApplyCommands(commands);
     }
 
-    private void moveRoverByCommands() {
-        List<String> commands = Arrays.stream(this.commands.split("")).toList();
-        for (String command : commands) {
-            updateCoordinatesOrDirection(command);
+    private void readAndApplyCommands(String commands) {
+        List<String> commandsList = Arrays.stream(commands.split("")).toList();
+        for (String command : commandsList) {
+            updateDirectionOrCoordinates(command);
         }
     }
 
-    private void updateCoordinatesOrDirection(String command) {
+    private void updateDirectionOrCoordinates(String command) {
         if ("L".compareTo(command) == 0 || "R".compareTo(command) == 0) {
-            int lastDirectionIndex = directions.size() - 1;
-            boolean isTurnLeftCommand = parseSingleLeftRightCommand(command);
-            currentDirectionIndex = getIndexFromCurrentValueAndTurnLeftCommand(isTurnLeftCommand, lastDirectionIndex);
+            boolean isTurnLeftCommand = parseLeftRightCommand(command);
+            updateDirection(isTurnLeftCommand);
         } else {
-            boolean isMoveForwardCommand = parseSingleForwardBackwardCommand(command);
+            boolean isMoveForwardCommand = parseForwardBackwardCommand(command);
             updateCoordinates(isMoveForwardCommand);
         }
     }
 
-    private int getIndexFromCurrentValueAndTurnLeftCommand(boolean isTurnLeftCommand, int lastDirectionIndex) {
-        if (isTurnLeftCommand && currentDirectionIndex == 0) {
-            return lastDirectionIndex;
-        }
-        if (!isTurnLeftCommand && currentDirectionIndex == lastDirectionIndex) {
-            return 0;
-        }
-        if (isTurnLeftCommand) {
-            return currentDirectionIndex - 1;
-        } else {
-            return currentDirectionIndex + 1;
-        }
+    private void updateDirection(boolean isTurnLeftCommand) {
+        directionIndex.updateDirection(isTurnLeftCommand);
     }
 
-    private boolean parseSingleLeftRightCommand(String command) {
+    private boolean parseLeftRightCommand(String command) {
         return "L".compareTo(command) == 0;
     }
 
-    private boolean parseSingleForwardBackwardCommand(String command) {
+    private boolean parseForwardBackwardCommand(String command) {
         return "F".compareTo(command) == 0;
     }
 
     private void updateCoordinates(boolean isMoveForwardCommand) {
         int x = (int) this.coordinates.getX();
         int y = (int) this.coordinates.getY();
-        switch (currentDirectionIndex) {
+        switch (directionIndex.getIndex()) {
             case 0:
                 if (isMoveForwardCommand) {
                     this.coordinates.move(x, y + 1);
+//                    this.coordinates = new Point(x, y + 1);
+//                    this.coordinates.decrementY();
                 } else {
                     this.coordinates.move(x, y - 1);
                 }
