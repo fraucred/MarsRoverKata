@@ -5,11 +5,12 @@ import java.util.List;
 
 public class MarsRover {
     private Coordinates coordinates;
-    private final DirectionIndex directionIndex;
+    private Direction direction;
 
-    public MarsRover(Coordinates coordinates, DirectionIndex directionIndex) {
+
+    public MarsRover(Coordinates coordinates, Direction direction) {
         this.coordinates = coordinates;
-        this.directionIndex = directionIndex;
+        this.direction = direction;
     }
 
     public Coordinates getCoordinates() {
@@ -17,7 +18,7 @@ public class MarsRover {
     }
 
     public Direction getDirection() {
-        return directionIndex.getDirection();
+        return this.direction;
     }
 
     public void moveByCommands(String commands) {
@@ -32,21 +33,14 @@ public class MarsRover {
     }
 
     private void changeDirectionOrCoordinates(String command) {
-        if ("L".compareTo(command) == 0 || "R".compareTo(command) == 0) {
-            boolean isTurnLeftCommand = parseLeftRightCommand(command);
-            changeDirection(isTurnLeftCommand);
+        if ("L".compareTo(command) == 0) {
+            this.direction = this.direction.turnLeft();
+        } else if ("R".compareTo(command) == 0) {
+            this.direction = this.direction.turnRight();
         } else {
             boolean isMoveForwardCommand = parseForwardBackwardCommand(command);
             moveToNewCoordinates(isMoveForwardCommand);
         }
-    }
-
-    private void changeDirection(boolean isTurnLeftCommand) {
-        directionIndex.changeDirection(isTurnLeftCommand);
-    }
-
-    private boolean parseLeftRightCommand(String command) {
-        return "L".compareTo(command) == 0;
     }
 
     private boolean parseForwardBackwardCommand(String command) {
@@ -54,30 +48,10 @@ public class MarsRover {
     }
 
     private void moveToNewCoordinates(boolean isMoveForwardCommand) {
-        if (directionIndex.isFacingNorth()) {
-            if (isMoveForwardCommand) {
-                this.coordinates = this.coordinates.incrementY();   // value object + primitive obsession
-            } else {
-                this.coordinates = this.coordinates.decrementY();
-            }
-        } else if (directionIndex.isFacingEast()) {
-            if (isMoveForwardCommand) {
-                this.coordinates = this.coordinates.incrementX();
-            } else {
-                this.coordinates = this.coordinates.decrementX();
-            }
-        } else if (directionIndex.isFacingSouth()) {
-            if (isMoveForwardCommand) {
-                this.coordinates = this.coordinates.decrementY();
-            } else {
-                this.coordinates = this.coordinates.incrementY();
-            }
-        } else if (directionIndex.isFacingWest()) {
-            if (isMoveForwardCommand) {
-                this.coordinates = this.coordinates.decrementX();
-            } else {
-                this.coordinates = this.coordinates.incrementX();
-            }
+        if (isMoveForwardCommand) {
+            this.coordinates = this.direction.moveForward(this.coordinates);
+        } else {
+            this.coordinates = this.direction.moveBackward(this.coordinates);
         }
     }
 

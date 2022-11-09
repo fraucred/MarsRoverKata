@@ -1,6 +1,5 @@
 import org.example.Coordinates;
 import org.example.Direction;
-import org.example.DirectionIndex;
 import org.example.MarsRover;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -34,6 +33,10 @@ public class MarsRoverTest {
 
         assertEquals(new Coordinates(1, 1), marsRover.getCoordinates());
     }
+
+    // TODO parametered tests
+//    @ParameterizedTest
+//    @CsvSource
 
     @Test
     void given_left_command_rover_moves_to_the_left() {
@@ -91,6 +94,6 @@ public class MarsRoverTest {
     }
 
     private MarsRover initMarsRover(int x, int y, Direction direction) {
-        return new MarsRover(new Coordinates(x, y), new DirectionIndex(direction));
+        return new MarsRover(new Coordinates(x, y), direction);
     }
 }
