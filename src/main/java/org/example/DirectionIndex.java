@@ -20,38 +20,38 @@ public class DirectionIndex {
     }
 
     public void updateDirection(boolean isTurnLeftCommand) {
-        if (isTurnLeftCommand && isFirst()) {
-            overlapFromFirst();
-        } else if (!isTurnLeftCommand && isLast()) {
-            overlapFromLast();
+        if (isTurnLeftCommand && isFacingNorth()) {
+            faceWest();
+        } else if (!isTurnLeftCommand && isFacingWest()) {
+            faceNorth();
         } else if (isTurnLeftCommand) {
-            decrement();
+            turnLeft();
         } else {
-            increment();
+            turnRight();
         }
     }
 
-    private void increment() {
+    private void turnRight() {
         this.index++;
     }
 
-    private void decrement() {
+    private void turnLeft() {
         this.index--;
     }
 
-    private boolean isFirst() {
+    private boolean isFacingNorth() {
         return this.index == 0;
     }
 
-    private boolean isLast() {
+    private boolean isFacingWest() {
         return this.index == directions.size() - 1;
     }
 
-    private void overlapFromFirst() {
+    private void faceWest() {
         this.index = directions.size() - 1;
     }
 
-    private void overlapFromLast() {
+    private void faceNorth() {
         this.index = 0;
     }
 }
