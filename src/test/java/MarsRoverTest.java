@@ -1,28 +1,18 @@
-import org.example.DirectionIndex;
+import org.example.Direction;
 import org.example.MarsRover;
+import org.example.Coordinates;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MarsRoverTest {
 
     @Test
-    void receives_a_character_array_of_commands() {
-        MarsRover marsRover = initMarsRover(1, 1, "N");
-
-        marsRover.moveByCommands("FLFFRBLFR");
-
-        assertEquals("FLFFRBLFR", marsRover.getCommands());
-    }
-
-    @Test
     void has_initial_starting_point_and_faces_north_direction() {
         MarsRover marsRover = initMarsRover(1, 1, "N");
 
-        assertEquals(new Point(1, 1), marsRover.getCoordinates());
+        assertEquals(new Coordinates(1, 1), marsRover.getCoordinates());
         assertEquals("N", marsRover.getDirection());
     }
 
@@ -32,7 +22,7 @@ public class MarsRoverTest {
 
         marsRover.moveByCommands("F");
 
-        assertEquals(new Point(1, 2), marsRover.getCoordinates());
+        assertEquals(new Coordinates(1, 2), marsRover.getCoordinates());
     }
 
     @Test
@@ -41,7 +31,7 @@ public class MarsRoverTest {
 
         marsRover.moveByCommands("B");
 
-        assertEquals(new Point(1, 1), marsRover.getCoordinates());
+        assertEquals(new Coordinates(1, 1), marsRover.getCoordinates());
     }
 
     @Test
@@ -86,7 +76,7 @@ public class MarsRoverTest {
 
         marsRover.moveByCommands("B");
 
-        assertEquals(new Point(1, 4), marsRover.getCoordinates());
+        assertEquals(new Coordinates(1, 4), marsRover.getCoordinates());
     }
 
     @Test
@@ -95,11 +85,11 @@ public class MarsRoverTest {
 
         marsRover.moveByCommands("FBFFR");
 
-        assertEquals(new Point(1, 3), marsRover.getCoordinates());
+        assertEquals(new Coordinates(1, 3), marsRover.getCoordinates());
         assertEquals("E", marsRover.getDirection());
     }
 
     private MarsRover initMarsRover(int x, int y, String direction) {
-        return new MarsRover(new Point(x, y), new DirectionIndex(direction));
+        return new MarsRover(new Coordinates(x, y), new Direction(direction));
     }
 }
