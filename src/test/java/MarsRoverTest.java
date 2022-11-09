@@ -1,8 +1,9 @@
-import org.example.Coordinates;
-import org.example.Direction;
-import org.example.Land;
-import org.example.MarsRover;
+import org.example.*;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -84,6 +85,16 @@ public class MarsRoverTest {
     }
 
     @Test
+    void starts_at_1_1_NORTH_and_moves_to_1_1_WEST_facing_obstacles_with_complex_commands() {
+        MarsRover marsRover = initMarsRoverWithObstacle(1, 1, Direction.NORTH);
+
+        marsRover.moveByCommands("RFFFFFFFBRFFLFRFFLF");
+
+        assertEquals(new Coordinates(7, 7), marsRover.getCoordinates());
+        assertEquals(Direction.WEST, marsRover.getDirection());
+    }
+
+    @Test
     void starts_at_1_1_NORTH_and_moves_to_1_3_EAST_with_FBFFR_commands() {
         MarsRover marsRover = initMarsRover(1, 1, Direction.NORTH);
 
@@ -104,7 +115,15 @@ public class MarsRoverTest {
     }
 
     private MarsRover initMarsRover(int x, int y, Direction direction) {
-        Land marsLand = new Land(10, 10);
+        Land marsLand = new Land(10, 10, Collections.emptyList());
+        return new MarsRover(marsLand, new Coordinates(x, y), direction);
+    }
+
+    private MarsRover initMarsRoverWithObstacle(int x, int y, Direction direction) {
+        Obstacle firstObstacle = new Obstacle(new Coordinates(8, 1));
+        Obstacle secondObstacle = new Obstacle(new Coordinates(7, 9));
+        List<Obstacle> obstacles = Arrays.asList(firstObstacle, secondObstacle);
+        Land marsLand = new Land(10, 10, obstacles);
         return new MarsRover(marsLand, new Coordinates(x, y), direction);
     }
 }
