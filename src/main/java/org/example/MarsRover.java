@@ -1,27 +1,22 @@
 package org.example;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
 public class MarsRover {
-    private final Point coordinates;
+    private Coordinates coordinates;
     private final DirectionIndex directionIndex;
 
-    public MarsRover(Point coordinates, DirectionIndex directionIndex) {
+    public MarsRover(Coordinates coordinates, DirectionIndex directionIndex) {
         this.coordinates = coordinates;
         this.directionIndex = directionIndex;
     }
 
-    public String getCommands() {
-        return "FLFFRBLFR";
-    }
-
-    public Point getCoordinates() {
+    public Coordinates getCoordinates() {
         return this.coordinates;
     }
 
-    public String getDirection() {
+    public Direction getDirection() {
         return directionIndex.getDirection();
     }
 
@@ -32,22 +27,22 @@ public class MarsRover {
     private void readAndApplyCommands(String commands) {
         List<String> commandsList = Arrays.stream(commands.split("")).toList();
         for (String command : commandsList) {
-            updateDirectionOrCoordinates(command);
+            changeDirectionOrCoordinates(command);
         }
     }
 
-    private void updateDirectionOrCoordinates(String command) {
+    private void changeDirectionOrCoordinates(String command) {
         if ("L".compareTo(command) == 0 || "R".compareTo(command) == 0) {
             boolean isTurnLeftCommand = parseLeftRightCommand(command);
-            updateDirection(isTurnLeftCommand);
+            changeDirection(isTurnLeftCommand);
         } else {
             boolean isMoveForwardCommand = parseForwardBackwardCommand(command);
-            updateCoordinates(isMoveForwardCommand);
+            moveToNewCoordinates(isMoveForwardCommand);
         }
     }
 
-    private void updateDirection(boolean isTurnLeftCommand) {
-        directionIndex.updateDirection(isTurnLeftCommand);
+    private void changeDirection(boolean isTurnLeftCommand) {
+        directionIndex.changeDirection(isTurnLeftCommand);
     }
 
     private boolean parseLeftRightCommand(String command) {
@@ -58,40 +53,31 @@ public class MarsRover {
         return "F".compareTo(command) == 0;
     }
 
-    private void updateCoordinates(boolean isMoveForwardCommand) {
-        int x = (int) this.coordinates.getX();
-        int y = (int) this.coordinates.getY();
-        switch (directionIndex.getIndex()) {
-            case 0:
-                if (isMoveForwardCommand) {
-                    this.coordinates.move(x, y + 1);
-//                    this.coordinates = new Point(x, y + 1);
-//                    this.coordinates.decrementY();
-                } else {
-                    this.coordinates.move(x, y - 1);
-                }
-                break;
-            case 1:
-                if (isMoveForwardCommand) {
-                    this.coordinates.move(x + 1, y);
-                } else {
-                    this.coordinates.move(x - 1, y);
-                }
-                break;
-            case 2:
-                if (isMoveForwardCommand) {
-                    this.coordinates.move(x, y - 1);
-                } else {
-                    this.coordinates.move(x, y + 1);
-                }
-                break;
-            case 3:
-                if (isMoveForwardCommand) {
-                    this.coordinates.move(x - 1, y);
-                } else {
-                    this.coordinates.move(x + 1, y);
-                }
-                break;
+    private void moveToNewCoordinates(boolean isMoveForwardCommand) {
+        if (directionIndex.isFacingNorth()) {
+            if (isMoveForwardCommand) {
+                this.coordinates = this.coordinates.incrementY();   // value object + primitive obsession
+            } else {
+                this.coordinates = this.coordinates.decrementY();
+            }
+        } else if (directionIndex.isFacingEast()) {
+            if (isMoveForwardCommand) {
+                this.coordinates = this.coordinates.incrementX();
+            } else {
+                this.coordinates = this.coordinates.decrementX();
+            }
+        } else if (directionIndex.isFacingSouth()) {
+            if (isMoveForwardCommand) {
+                this.coordinates = this.coordinates.decrementY();
+            } else {
+                this.coordinates = this.coordinates.incrementY();
+            }
+        } else if (directionIndex.isFacingWest()) {
+            if (isMoveForwardCommand) {
+                this.coordinates = this.coordinates.decrementX();
+            } else {
+                this.coordinates = this.coordinates.incrementX();
+            }
         }
     }
 
