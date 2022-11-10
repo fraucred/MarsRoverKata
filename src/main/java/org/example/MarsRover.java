@@ -18,29 +18,37 @@ public class MarsRover {
     }
 
     public void readCommands(String commandsArray) {
-        List<String> commandsList = Arrays.stream(commandsArray.split("")).toList();
-        for (String command : commandsList) {
-            Coordinates newCoordinates = moveOrTurn(command);
-            if (detectObstacle(newCoordinates)) {
-                reporter.obstacleFound(newCoordinates);
-                break;
+        List<Command> commandsList = Arrays.stream(commandsArray.split("")).map(Command::valueOf).toList();
+        for (Command command : commandsList) {
+            if (command.isTurnAction()) {
+                turn(command);
             } else {
-                this.coordinates = newCoordinates;
+                Coordinates newCoordinates = move(command);
+                if (detectObstacle(newCoordinates)) {
+                    reporter.obstacleFound(newCoordinates);
+                    break;
+                } else {
+                    this.coordinates = newCoordinates;
+                }
             }
         }
     }
 
-    private Coordinates moveOrTurn(String command) {
-        if ("L".equals(command)) {
-            this.direction = this.direction.left();
-        } else if ("R".equals(command)) {
-            this.direction = this.direction.right();
-        } else if ("F".equals(command)) {
+    private Coordinates move(Command command) {
+        if (Command.F.equals(command)) {
             return this.direction.forward(this.coordinates, this.marsSurface);
-        } else {
+        } else if (Command.B.equals(command)){
             return this.direction.backward(this.coordinates, this.marsSurface);
         }
         return this.coordinates;
+    }
+
+    private void turn(Command command) {
+        if (Command.L.equals(command)) {
+            this.direction = this.direction.left();
+        } else if (Command.R.equals(command)){
+            this.direction = this.direction.right();
+        }
     }
 
     private boolean detectObstacle(Coordinates coordinates) {
