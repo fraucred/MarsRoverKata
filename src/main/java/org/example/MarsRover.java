@@ -18,7 +18,7 @@ public class MarsRover {
     public void readCommands(String commandsArray) {
         List<String> commandsList = Arrays.stream(commandsArray.split("")).toList();
         for (String command : commandsList) {   // stream instead of for each
-            Coordinates newCoordinates = wrapOnEdge(moveOrTurn(command));
+            Coordinates newCoordinates = Coordinates.wrapOnEdge(moveOrTurn(command), marsSurface);
             if (detectObstacle(newCoordinates)) {
                 System.out.println("There is an obstacle found at coordinates " + newCoordinates);  // TODO SRP
                 break;
@@ -41,21 +41,8 @@ public class MarsRover {
         return this.coordinates;
     }
 
-    private Coordinates wrapOnEdge(Coordinates coordinates) {   // marsSurface comme paramètre
-        if (coordinates.isPastWest(marsSurface.width())) {
-            return coordinates.oppositeEast();
-        } else if (coordinates.isPastSouth(marsSurface.depth())) {
-            return coordinates.oppositeNorth();
-        } else if (coordinates.isPastEast()) {  // message obsession, refactoriser
-            return coordinates.oppositeWest(marsSurface.width());
-        } else if (coordinates.isPastNorth()) {
-            return coordinates.oppositeSouth(marsSurface.depth());
-        }
-        return coordinates;
-    }
-
     private boolean detectObstacle(Coordinates coordinates) {
-        return this.marsSurface.detectsObstacle(coordinates);   // TODO reword
+        return this.marsSurface.obstacleExists(coordinates);
     }
 
     @Override

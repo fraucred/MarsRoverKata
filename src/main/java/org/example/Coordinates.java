@@ -18,35 +18,48 @@ public record Coordinates(Integer x, Integer y) {
         return new Coordinates(this.x, this.y - 1);
     }
 
-    public Coordinates oppositeEast() {
+    public static Coordinates wrapOnEdge(Coordinates coordinates, MarsSurface marsSurface) {
+        if (coordinates.isPastWest(marsSurface.width())) {
+            return coordinates.oppositeEast();
+        } else if (coordinates.isPastSouth(marsSurface.depth())) {
+            return coordinates.oppositeNorth();
+        } else if (coordinates.isPastEast()) {
+            return coordinates.oppositeWest(marsSurface.width());
+        } else if (coordinates.isPastNorth()) {
+            return coordinates.oppositeSouth(marsSurface.depth());
+        }
+        return coordinates;
+    }
+
+    private Coordinates oppositeEast() {
         return new Coordinates(1, this.y);
     }
 
-    public Coordinates oppositeWest(Integer x) {
+    private Coordinates oppositeWest(Integer x) {
         return new Coordinates(x, this.y);
     }
 
-    public Coordinates oppositeNorth() {
+    private Coordinates oppositeNorth() {
         return new Coordinates(this.x, 1);
     }
 
-    public Coordinates oppositeSouth(Integer y) {
+    private Coordinates oppositeSouth(Integer y) {
         return new Coordinates(this.x, y);
     }
 
-    public boolean isPastWest(Integer width) {
+    private boolean isPastWest(Integer width) {
         return this.x > width;
     }
 
-    public boolean isPastSouth(Integer depth) {
+    private boolean isPastSouth(Integer depth) {
         return this.y > depth;
     }
 
-    public boolean isPastEast() {
+    private boolean isPastEast() {
         return this.x == 0;
     }
 
-    public boolean isPastNorth() {
+    private boolean isPastNorth() {
         return this.y == 0;
     }
 }
