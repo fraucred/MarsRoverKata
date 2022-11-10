@@ -13,13 +13,18 @@ public enum Direction {
         }
 
         @Override
-        Coordinates forward(Coordinates coordinates) {
-            return coordinates.moveNorth();
+        Coordinates forward(Coordinates coordinates, MarsSurface marsSurface) {
+            return SOUTH.isPast(coordinates.moveNorth(), marsSurface);
         }
 
         @Override
-        Coordinates backward(Coordinates coordinates) {
-            return coordinates.moveSouth();
+        Coordinates backward(Coordinates coordinates, MarsSurface marsSurface) {
+            return isPast(coordinates.moveSouth(), marsSurface);
+        }
+
+        @Override
+        Coordinates isPast(Coordinates coordinates, MarsSurface marsSurface) {
+            return coordinates.isPastNorth() ? coordinates.oppositeSouth(marsSurface.depth()) : coordinates;
         }
     },
     EAST {
@@ -34,13 +39,18 @@ public enum Direction {
         }
 
         @Override
-        Coordinates forward(Coordinates coordinates) {
-            return coordinates.moveEast();
+        Coordinates forward(Coordinates coordinates, MarsSurface marsSurface) {
+            return WEST.isPast(coordinates.moveEast(), marsSurface);
         }
 
         @Override
-        Coordinates backward(Coordinates coordinates) {
-            return coordinates.moveWest();
+        Coordinates backward(Coordinates coordinates, MarsSurface marsSurface) {
+            return isPast(coordinates.moveWest(), marsSurface);
+        }
+
+        @Override
+        Coordinates isPast(Coordinates coordinates, MarsSurface marsSurface) {
+            return coordinates.isPastEast() ? coordinates.oppositeWest(marsSurface.width()) : coordinates;
         }
     },
     SOUTH {
@@ -55,13 +65,18 @@ public enum Direction {
         }
 
         @Override
-        Coordinates forward(Coordinates coordinates) {
-            return NORTH.backward(coordinates);
+        Coordinates forward(Coordinates coordinates, MarsSurface marsSurface) {
+            return NORTH.backward(coordinates, marsSurface);
         }
 
         @Override
-        Coordinates backward(Coordinates coordinates) {
-            return NORTH.forward(coordinates);
+        Coordinates backward(Coordinates coordinates, MarsSurface marsSurface) {
+            return NORTH.forward(coordinates, marsSurface);
+        }
+
+        @Override
+        Coordinates isPast(Coordinates coordinates, MarsSurface marsSurface) {
+            return coordinates.isPastSouth(marsSurface.depth()) ? coordinates.oppositeNorth() : coordinates;
         }
     },
     WEST {
@@ -76,21 +91,29 @@ public enum Direction {
         }
 
         @Override
-        Coordinates forward(Coordinates coordinates) {
-            return EAST.backward(coordinates);
+        Coordinates forward(Coordinates coordinates, MarsSurface marsSurface) {
+            return EAST.backward(coordinates, marsSurface);
         }
 
         @Override
-        Coordinates backward(Coordinates coordinates) {
-            return EAST.forward(coordinates);
+        Coordinates backward(Coordinates coordinates, MarsSurface marsSurface) {
+            return EAST.forward(coordinates, marsSurface);
         }
+
+        @Override
+        Coordinates isPast(Coordinates coordinates, MarsSurface marsSurface) {
+            return coordinates.isPastWest(marsSurface.width()) ? coordinates.oppositeEast() : coordinates;
+        }
+
     };
 
     abstract Direction left();
 
     abstract Direction right();
 
-    abstract Coordinates forward(Coordinates coordinates);
+    abstract Coordinates forward(Coordinates coordinates, MarsSurface marsSurface);
 
-    abstract Coordinates backward(Coordinates coordinates);
+    abstract Coordinates backward(Coordinates coordinates, MarsSurface marsSurface);
+
+    abstract Coordinates isPast(Coordinates coordinates, MarsSurface marsSurface);
 }

@@ -20,7 +20,7 @@ public class MarsRover {
     public void readCommands(String commandsArray) {
         List<String> commandsList = Arrays.stream(commandsArray.split("")).toList();
         for (String command : commandsList) {   // stream instead of for each
-            Coordinates newCoordinates = Coordinates.wrapOnEdge(moveOrTurn(command), marsSurface);
+            Coordinates newCoordinates = moveOrTurn(command);
             if (detectObstacle(newCoordinates)) {
                 reporter.obstacleFound(newCoordinates);
                 break;
@@ -36,9 +36,9 @@ public class MarsRover {
         } else if ("R".equals(command)) {
             this.direction = this.direction.right();
         } else if ("F".equals(command)) {
-            return this.direction.forward(this.coordinates);
+            return this.direction.forward(this.coordinates, this.marsSurface);
         } else {
-            return this.direction.backward(this.coordinates);
+            return this.direction.backward(this.coordinates, this.marsSurface);
         }
         return this.coordinates;
     }
