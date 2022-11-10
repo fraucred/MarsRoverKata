@@ -2,31 +2,51 @@ package org.example;
 
 public record Coordinates(Integer x, Integer y) {
 
-    public Coordinates moveEast(Integer width) {
-        if (this.x + 1 > width) {
-            return new Coordinates(1, this.y);
-        }
+    public Coordinates moveEast() {
         return new Coordinates(this.x + 1, this.y);
     }
 
-    public Coordinates moveWest(Integer width) {
-        if (this.x - 1 == 0) {
-            return new Coordinates(width, this.y);
-        }
+    public Coordinates moveWest() {
         return new Coordinates(this.x - 1, this.y);
     }
 
-    public Coordinates moveNorth(Integer depth) {
-        if (this.y + 1 > depth) {
-            return new Coordinates(this.x, 1);
-        }
+    public Coordinates moveNorth() {
         return new Coordinates(this.x, this.y + 1);
     }
 
-    public Coordinates moveSouth(Integer depth) {
-        if (this.y - 1 == 0) {
-            return new Coordinates(this.x, depth);
-        }
+    public Coordinates moveSouth() {
         return new Coordinates(this.x, this.y - 1);
+    }
+
+    public Coordinates oppositeEast() {
+        return new Coordinates(1, this.y);
+    }
+
+    public Coordinates oppositeWest(Integer x) {
+        return new Coordinates(x, this.y);
+    }
+
+    public Coordinates oppositeNorth() {
+        return new Coordinates(this.x, 1);
+    }
+
+    public Coordinates oppositeSouth(Integer y) {
+        return new Coordinates(this.x, y);
+    }
+
+    public boolean isPastWest(Integer width) {
+        return this.x > width;
+    }
+
+    public boolean isPastSouth(Integer depth) {
+        return this.y > depth;
+    }
+
+    public boolean isPastEast() {
+        return this.x == 0;
+    }
+
+    public boolean isPastNorth() {
+        return this.y == 0;
     }
 }

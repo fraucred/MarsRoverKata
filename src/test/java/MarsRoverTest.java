@@ -15,8 +15,7 @@ public class MarsRoverTest {
     void has_initial_starting_point_and_faces_north_direction() {
         MarsRover marsRover = initMarsRover(1, 1, Direction.NORTH);
 
-        assertEquals(new Coordinates(1, 1), marsRover.getCoordinates());
-        assertEquals(Direction.NORTH, marsRover.getDirection());
+        assertEquals(initMarsRover(1, 1, Direction.NORTH), marsRover);
     }
 
     @Test
@@ -25,7 +24,7 @@ public class MarsRoverTest {
 
         marsRover.readCommands("F");
 
-        assertEquals(new Coordinates(1, 2), marsRover.getCoordinates());
+        assertEquals(initMarsRover(1, 2, Direction.NORTH), marsRover);
     }
 
     @Test
@@ -34,12 +33,8 @@ public class MarsRoverTest {
 
         marsRover.readCommands("B");
 
-        assertEquals(new Coordinates(1, 1), marsRover.getCoordinates());
+        assertEquals(initMarsRover(1, 1, Direction.NORTH), marsRover);
     }
-
-    // TODO parametered tests
-//    @ParameterizedTest
-//    @CsvSource
 
     @Test
     void given_left_command_rover_moves_to_the_left() {
@@ -47,7 +42,7 @@ public class MarsRoverTest {
 
         marsRover.readCommands("L");
 
-        assertEquals(Direction.WEST, marsRover.getDirection());
+        assertEquals(initMarsRover(1, 1, Direction.WEST), marsRover);
     }
 
     @Test
@@ -56,7 +51,7 @@ public class MarsRoverTest {
 
         marsRover.readCommands("R");
 
-        assertEquals(Direction.EAST, marsRover.getDirection());
+        assertEquals(initMarsRover(1, 1, Direction.EAST), marsRover);
     }
 
     @Test
@@ -65,7 +60,7 @@ public class MarsRoverTest {
 
         marsRover.readCommands("RR");
 
-        assertEquals(Direction.SOUTH, marsRover.getDirection());
+        assertEquals(initMarsRover(1, 1, Direction.SOUTH), marsRover);
     }
 
     @Test
@@ -74,7 +69,7 @@ public class MarsRoverTest {
 
         marsRover.readCommands("RRR");
 
-        assertEquals(Direction.WEST, marsRover.getDirection());
+        assertEquals(initMarsRover(1, 1, Direction.WEST), marsRover);
     }
 
     @Test
@@ -83,17 +78,7 @@ public class MarsRoverTest {
 
         marsRover.readCommands("B");
 
-        assertEquals(new Coordinates(1, 10), marsRover.getCoordinates());
-    }
-
-    @Test
-    void starts_at_1_1_NORTH_and_moves_to_1_1_EAST_facing_obstacles_with_complex_commands() {
-        MarsRover marsRover = initMarsRoverWithObstacles(1, 1, Direction.NORTH);
-
-        marsRover.readCommands("RFFFFFFFBRFFLFRFFLF");
-
-        assertEquals(new Coordinates(7, 7), marsRover.getCoordinates());
-        assertEquals(Direction.EAST, marsRover.getDirection());
+        assertEquals(initMarsRover(1, 10, Direction.NORTH), marsRover);
     }
 
     @Test
@@ -102,8 +87,7 @@ public class MarsRoverTest {
 
         marsRover.readCommands("FBFFR");
 
-        assertEquals(new Coordinates(1, 3), marsRover.getCoordinates());
-        assertEquals(Direction.EAST, marsRover.getDirection());
+        assertEquals(initMarsRover(1, 3, Direction.EAST), marsRover);
     }
 
     @Test
@@ -112,8 +96,16 @@ public class MarsRoverTest {
 
         marsRover.readCommands("FBFFLFF");
 
-        assertEquals(new Coordinates(9, 3), marsRover.getCoordinates());
-        assertEquals(Direction.WEST, marsRover.getDirection());
+        assertEquals(initMarsRover(9, 3, Direction.WEST), marsRover);
+    }
+
+    @Test
+    void starts_at_1_1_NORTH_and_moves_to_7_1_EAST_facing_obstacle() {
+        MarsRover marsRover = initMarsRoverWithObstacles(1, 1, Direction.NORTH);
+
+        marsRover.readCommands("RFFFFFFFBRFFLFRFFLF");
+
+        assertEquals(initMarsRoverWithObstacles(7, 1, Direction.EAST), marsRover);
     }
 
     private MarsRover initMarsRover(int x, int y, Direction direction) {

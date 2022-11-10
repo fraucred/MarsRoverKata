@@ -3,99 +3,94 @@ package org.example;
 public enum Direction {
     NORTH {
         @Override
-        Direction turnLeft() {
+        Direction left() {
             return WEST;
         }
 
         @Override
-        Direction turnRight() {
+        Direction right() {
             return EAST;
         }
 
         @Override
-        Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates) {
-            Coordinates coordinatesAfterMove = coordinates.moveNorth(marsSurface.depth());
-            return marsSurface.hasObstacle(coordinatesAfterMove) ? coordinates : coordinatesAfterMove;
+        Coordinates forward(Coordinates coordinates) {
+            return coordinates.moveNorth();
         }
 
         @Override
-        Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates) {
-            Coordinates coordinatesAfterMove = coordinates.moveSouth(marsSurface.depth());
-            return marsSurface.hasObstacle(coordinatesAfterMove) ? coordinates : coordinatesAfterMove;
+        Coordinates backward(Coordinates coordinates) {
+            return coordinates.moveSouth();
         }
     },
     EAST {
         @Override
-        Direction turnLeft() {
+        Direction left() {
             return NORTH;
         }
 
         @Override
-        Direction turnRight() {
+        Direction right() {
             return SOUTH;
         }
 
         @Override
-        Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates) {
-            Coordinates coordinatesAfterMove = coordinates.moveEast(marsSurface.width());
-            return marsSurface.hasObstacle(coordinatesAfterMove) ? coordinates : coordinatesAfterMove;
+        Coordinates forward(Coordinates coordinates) {
+            return coordinates.moveEast();
         }
 
         @Override
-        Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates) {
-            Coordinates coordinatesAfterMove = coordinates.moveWest(marsSurface.width());
-            return marsSurface.hasObstacle(coordinatesAfterMove) ? coordinates : coordinatesAfterMove;
+        Coordinates backward(Coordinates coordinates) {
+            return coordinates.moveWest();
         }
     },
     SOUTH {
         @Override
-        Direction turnLeft() {
+        Direction left() {
             return EAST;
         }
 
         @Override
-        Direction turnRight() {
+        Direction right() {
             return WEST;
         }
 
         @Override
-        Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates) {
-            return NORTH.moveBackward(marsSurface, coordinates);
+        Coordinates forward(Coordinates coordinates) {
+            return NORTH.backward(coordinates);
         }
 
         @Override
-        Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates) {
-            return NORTH.moveForward(marsSurface, coordinates);
+        Coordinates backward(Coordinates coordinates) {
+            return NORTH.forward(coordinates);
         }
     },
     WEST {
         @Override
-        Direction turnLeft() {
+        Direction left() {
             return SOUTH;
         }
 
         @Override
-        Direction turnRight() {
+        Direction right() {
             return NORTH;
         }
 
         @Override
-        Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates) {
-            return EAST.moveBackward(marsSurface, coordinates);
+        Coordinates forward(Coordinates coordinates) {
+            return EAST.backward(coordinates);
         }
 
         @Override
-        Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates) {
-            return EAST.moveForward(marsSurface, coordinates);
+        Coordinates backward(Coordinates coordinates) {
+            return EAST.forward(coordinates);
         }
     };
 
+    abstract Direction left();
 
-    abstract Direction turnLeft();
+    abstract Direction right();
 
-    abstract Direction turnRight();
+    abstract Coordinates forward(Coordinates coordinates);
 
-    abstract Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates);
-
-    abstract Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates);
+    abstract Coordinates backward(Coordinates coordinates);
 }
