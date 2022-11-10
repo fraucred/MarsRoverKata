@@ -1,7 +1,4 @@
-import org.example.Coordinates;
-import org.example.Direction;
-import org.example.MarsRover;
-import org.example.MarsSurface;
+import org.example.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -110,13 +107,13 @@ public class MarsRoverTest {
 
     private MarsRover initMarsRover(int x, int y, Direction direction) {
         MarsSurface marsLand = new MarsSurface(10, 10, Collections.emptyList());
-        return new MarsRover(marsLand, new Coordinates(x, y), direction);
+        return new MarsRover(marsLand, new Coordinates(x, y), direction, new Reporter());
     }
 
     private MarsRover initMarsRoverWithObstacles(int x, int y, Direction direction) {
         Coordinates firstObstacle = new Coordinates(8, 1);
         Coordinates secondObstacle = new Coordinates(7, 9);
         MarsSurface marsSurface = new MarsSurface(10, 10, Arrays.asList(firstObstacle, secondObstacle));
-        return new MarsRover(marsSurface, new Coordinates(x, y), direction);
+        return new MarsRover(marsSurface, new Coordinates(x, y), direction, new Reporter());
     }
 }

@@ -8,11 +8,13 @@ public class MarsRover {
     private Coordinates coordinates;
     private Direction direction;
     private final MarsSurface marsSurface;
+    private final Reporter reporter;
 
-    public MarsRover(MarsSurface marsSurface, Coordinates coordinates, Direction direction) {
+    public MarsRover(MarsSurface marsSurface, Coordinates coordinates, Direction direction, Reporter reporter) {
         this.coordinates = coordinates;
         this.direction = direction;
         this.marsSurface = marsSurface;
+        this.reporter = reporter;
     }
 
     public void readCommands(String commandsArray) {
@@ -20,7 +22,7 @@ public class MarsRover {
         for (String command : commandsList) {   // stream instead of for each
             Coordinates newCoordinates = Coordinates.wrapOnEdge(moveOrTurn(command), marsSurface);
             if (detectObstacle(newCoordinates)) {
-                System.out.println("There is an obstacle found at coordinates " + newCoordinates);  // TODO SRP
+                reporter.obstacleFound(newCoordinates);
                 break;
             } else {
                 this.coordinates = newCoordinates;
