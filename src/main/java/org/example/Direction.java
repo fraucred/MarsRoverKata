@@ -13,13 +13,15 @@ public enum Direction {
         }
 
         @Override
-        Coordinates moveForward(Land land, Coordinates coordinates) {
-            return coordinates.incrementY(land.depth());
+        Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates) {
+            Coordinates coordinatesAfterMove = coordinates.moveNorth(marsSurface.depth());
+            return marsSurface.hasObstacle(coordinatesAfterMove) ? coordinates : coordinatesAfterMove;
         }
 
         @Override
-        Coordinates moveBackward(Land land, Coordinates coordinates) {
-            return coordinates.decrementY(land.depth());
+        Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates) {
+            Coordinates coordinatesAfterMove = coordinates.moveSouth(marsSurface.depth());
+            return marsSurface.hasObstacle(coordinatesAfterMove) ? coordinates : coordinatesAfterMove;
         }
     },
     EAST {
@@ -34,13 +36,15 @@ public enum Direction {
         }
 
         @Override
-        Coordinates moveForward(Land land, Coordinates coordinates) {
-            return coordinates.incrementX(land.width());
+        Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates) {
+            Coordinates coordinatesAfterMove = coordinates.moveEast(marsSurface.width());
+            return marsSurface.hasObstacle(coordinatesAfterMove) ? coordinates : coordinatesAfterMove;
         }
 
         @Override
-        Coordinates moveBackward(Land land, Coordinates coordinates) {
-            return coordinates.decrementX(land.width());
+        Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates) {
+            Coordinates coordinatesAfterMove = coordinates.moveWest(marsSurface.width());
+            return marsSurface.hasObstacle(coordinatesAfterMove) ? coordinates : coordinatesAfterMove;
         }
     },
     SOUTH {
@@ -55,13 +59,13 @@ public enum Direction {
         }
 
         @Override
-        Coordinates moveForward(Land land, Coordinates coordinates) {
-            return NORTH.moveBackward(land, coordinates);
+        Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates) {
+            return NORTH.moveBackward(marsSurface, coordinates);
         }
 
         @Override
-        Coordinates moveBackward(Land land, Coordinates coordinates) {
-            return NORTH.moveForward(land, coordinates);
+        Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates) {
+            return NORTH.moveForward(marsSurface, coordinates);
         }
     },
     WEST {
@@ -76,13 +80,13 @@ public enum Direction {
         }
 
         @Override
-        Coordinates moveForward(Land land, Coordinates coordinates) {
-            return EAST.moveBackward(land, coordinates);
+        Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates) {
+            return EAST.moveBackward(marsSurface, coordinates);
         }
 
         @Override
-        Coordinates moveBackward(Land land, Coordinates coordinates) {
-            return EAST.moveForward(land, coordinates);
+        Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates) {
+            return EAST.moveForward(marsSurface, coordinates);
         }
     };
 
@@ -91,7 +95,7 @@ public enum Direction {
 
     abstract Direction turnRight();
 
-    abstract Coordinates moveForward(Land land, Coordinates coordinates);
+    abstract Coordinates moveForward(MarsSurface marsSurface, Coordinates coordinates);
 
-    abstract Coordinates moveBackward(Land land, Coordinates coordinates);
+    abstract Coordinates moveBackward(MarsSurface marsSurface, Coordinates coordinates);
 }

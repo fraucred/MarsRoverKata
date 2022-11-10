@@ -6,12 +6,12 @@ import java.util.List;
 public class MarsRover {
     private Coordinates coordinates;
     private Direction direction;
-    private final Land land;
+    private final MarsSurface marsSurface;
 
-    public MarsRover(Land land, Coordinates coordinates, Direction direction) {
+    public MarsRover(MarsSurface marsSurface, Coordinates coordinates, Direction direction) {
         this.coordinates = coordinates;
         this.direction = direction;
-        this.land = land;
+        this.marsSurface = marsSurface;
     }
 
     public Coordinates getCoordinates() {
@@ -22,37 +22,22 @@ public class MarsRover {
         return this.direction;
     }
 
-    public void moveByCommands(String commands) {
-        readAndApplyCommands(commands);
-    }
-
-    private void readAndApplyCommands(String commands) {
+    public void readCommands(String commands) {
         List<String> commandsList = Arrays.stream(commands.split("")).toList();
         for (String command : commandsList) {
-            changeDirectionOrCoordinates(command);
+            moveOrTurn(command);
         }
     }
 
-    private void changeDirectionOrCoordinates(String command) {
-        if ("L".compareTo(command) == 0) {
-            this.direction = this.direction.turnLeft();
-        } else if ("R".compareTo(command) == 0) {
+    private void moveOrTurn(String command) { // noms méthodes trop longues
+        if ("L".equals(command)) {
+            this.direction = this.direction.turnLeft(); // est-ce que c'est la direction qui tourne ou le rover ?
+        } else if ("R".equals(command)) {
             this.direction = this.direction.turnRight();
+        } else if ("F".equals(command)) {
+            this.coordinates = this.direction.moveForward(this.marsSurface, this.coordinates); //new concept ou déplacer méthode sur autre objet ?
         } else {
-            boolean isMoveForwardCommand = parseForwardBackwardCommand(command);
-            moveToNewCoordinates(isMoveForwardCommand);
-        }
-    }
-
-    private boolean parseForwardBackwardCommand(String command) {
-        return "F".compareTo(command) == 0;
-    }
-
-    private void moveToNewCoordinates(boolean isMoveForwardCommand) {
-        if (isMoveForwardCommand) {
-            this.coordinates = this.direction.moveForward(this.land, this.coordinates);
-        } else {
-            this.coordinates = this.direction.moveBackward(this.land, this.coordinates);
+            this.coordinates = this.direction.moveBackward(this.marsSurface, this.coordinates);
         }
     }
 
